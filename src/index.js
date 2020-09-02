@@ -8,7 +8,10 @@ const turnToPlayer = {
 };
 const boardElement = document.getElementById("board");
 const turnTeller = document.getElementById("turn_teller");
+const turnTimer = document.getElementById("turn_timer");
+const bar = document.getElementById("bar");
 let turn = "x";
+let time = 1000;
 let gameOver = false;
 
 function checkRow(row) {
@@ -79,6 +82,22 @@ function checkForWin() {
   return false;
 }
 
+function changeTurn() {
+  turn = turn === "x" ? "o" : "x";
+  turnTeller.innerText = "Turn of player " + turnToPlayer[turn];
+  time = 1000;
+}
+
+const timer = setInterval(() => {
+  if (time <= 1) {
+    changeTurn();
+  } else {
+    time--;
+  }
+  turnTimer.innerText = "Time left: " + Math.round(time / 100);
+  bar.style.width = time / 10 + "%";
+}, 10);
+
 for (let i = 0; i < BOARD_SIZE; i++) {
   const tr = document.createElement("tr");
   boardElement.appendChild(tr);
@@ -95,10 +114,12 @@ for (let i = 0; i < BOARD_SIZE; i++) {
       board[i][j] = turn;
       gameOver = checkForWin();
 
-      if (gameOver) alert("Player " + turnToPlayer[turn] + " won!");
-
-      turn = turn === "x" ? "o" : "x";
-      turnTeller.innerText = "Turn of player " + turnToPlayer[turn];
+      if (gameOver) {
+        alert("Player " + turnToPlayer[turn] + " won!");
+        clearInterval(timer);
+      } else {
+        changeTurn();
+      }
     };
     tr.appendChild(td);
     board[i].push([]);

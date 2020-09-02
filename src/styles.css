@@ -21,6 +21,17 @@ td {
   font-size: 30px;
 }
 
+#bar_container {
+  width: 50%;
+  height: 20px;
+  background-color: #ddd;
+}
+
+#bar {
+  height: 100%;
+  background-color: black;
+}
+
 .x {
   background-color: rgb(124, 252, 0);
 }
